@@ -11,16 +11,11 @@ class Walker:
         point(self.x, self.y)
 
     def step(self):
-        choice = floor(random.randint(0, 3));
+        xstep = random.randint(-1, 1)
+        ystep = random.randint(-1, 1)
 
-        if choice == 0:
-            self.x += 1
-        elif choice == 1:
-            self.x -= 1
-        elif choice == 2:
-            self.y += 1
-        else:
-            self.y -= 1
+        self.x += xstep
+        self.y += ystep
 
 walker = Walker(640, 240)
 
