@@ -57,12 +57,16 @@ def draw():
     background(255)
 
     gravity = Vector(0, 0.1)
-    wind = Vector(0.1, 0)
 
     for mover in movers:
         mover.apply_force(gravity)
 
         if mouse_is_pressed:
+            mouse = Vector(mouse_x, mouse_y)
+            distance = mover.position - mouse
+            magnitude = float(distance.magnitude)
+            distance.normalize()
+            wind = distance * 10 / magnitude
             mover.apply_force(wind)
 
         mover.update()
