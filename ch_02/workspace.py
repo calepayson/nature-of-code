@@ -10,25 +10,26 @@ class Mover:
         self.position = Vector(x, y)
         self.velocity = Vector(0, 0)
         self.acceleration = Vector(0, 0)
-        self.radius = size
+        self.diameter = size
+        self.radius = self.diameter / 2
         self.mass = size / 4 
 
     def apply_force(self, force: Vector):
         self.acceleration += force / self.mass
 
     def check_edges(self):
-        if self.position.x < 0:
-            self.position.x = 0
+        if self.position.x < 0 + self.radius:
+            self.position.x = 0 + self.radius
             self.velocity.x *= -1
-        elif self.position.x > width:
-            self.position.x = width
+        elif self.position.x > width - self.radius:
+            self.position.x = width - self.radius
             self.velocity.x *= -1
 
-        if self.position.y < 0:
-            self.position.y = 0
+        if self.position.y < 0 + self.radius:
+            self.position.y = 0 + self.radius
             self.velocity.y *= -1
-        elif self.position.y > height:
-            self.position.y = height
+        elif self.position.y > height - self.radius:
+            self.position.y = height - self.radius
             self.velocity.y *= -1
 
     def update(self):
@@ -39,7 +40,7 @@ class Mover:
     def show(self):
         stroke(0)
         fill(144)
-        circle(self.position.x, self.position.y, self.radius)
+        circle(self.position.x, self.position.y, self.diameter)
 
 movers = []
 
@@ -63,11 +64,6 @@ def draw():
 
         if mouse_is_pressed:
             mover.apply_force(wind)
-
-        if mover.position.y < height:
-            magnetism = 1 / (height - mover.position.y)
-            magnetic_force = Vector(0, -10 * magnetism)
-            mover.apply_force(magnetic_force)
 
         mover.update()
         mover.check_edges()
