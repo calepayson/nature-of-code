@@ -10,26 +10,27 @@ class Walker:
     """
     def __init__(self):
         """Initializes the Walker and locates it at the center of the screen"""
-        self.x = width / 2
-        self.y = height / 2
+        self.x = width / 2      # width and height are p5 variables. Your IDE
+        self.y = height / 2     # may not recognize them. It's ok.
 
     def show(self):
         """Draws the Walker on the p5 canvas"""
-        stroke(0)
+        stroke(0)   # Black
         point(self.x, self.y)
 
     def step(self):
         """Updates the x/y coordinates of the walker to step in a random 
-        direction"""
-        choice = random.randint(0,3)
-        if choice == 0:
-            self.x += 1
-        elif choice == 1:
-            self.x -= 1
-        elif choice == 2:
-            self.y += 1
-        elif choice == 3:
-            self.y -= 1
+        direction (or not at all)"""
+        floor = -1      # Minimum step size
+        ceiling = 1     # Maximum step size
+
+        # Get step sizes for each dimension
+        xstep = random.randint(floor, ceiling)
+        ystep = random.randint(floor, ceiling)
+
+        # Update the walker's location
+        self.x += xstep
+        self.y += ystep
 
 # Initialize the walker
 global walker
