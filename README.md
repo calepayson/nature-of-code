@@ -4,6 +4,7 @@
 
 - archive/ - Holds old exercises and workbooks.
 - exercises/ - Holds the most up to date exercise solutions.
+- one_offs/ - Holds one-off programs.
 - workbook.py - The current workbook I'm using.
 
 ## P5 Learnings
