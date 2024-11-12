@@ -35,3 +35,8 @@ run()
 - width and height are environment variables that represent the window width
   and height. Super useful! Your IDE may complain about them being undefined.
   Tough tiddies, it'll get over it.
+- If prompted to use the map() function by the textbook use remap() instead. 
+  remap() takes a float and two tuples. The first tuple defines the starting
+  range and the second defines the range to map the function to.
+- mouse_x, mouse_y, and mouse_is_pressed are useful environmental variables
+  when trying to take mouse input.
