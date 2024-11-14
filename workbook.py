@@ -1,60 +1,24 @@
 from p5 import *
-import random
 
-class Walker:
-    """Represents a generic walker.
-
-    Attributes:
-        x (int): The x-coordinate of the walker
-        y (int): The y-coordinate of the walker
-    """
-    def __init__(self):
-        """Initializes the Walker and locates it at the center of the screen"""
-        self.x = width / 2      # width and height are p5 variables. Your IDE
-        self.y = height / 2     # may not recognize them. It's ok.
-
-    def show(self):
-        """Draws the Walker on the p5 canvas"""
-        stroke(0)   # Black
-        point(self.x, self.y)
-
-    def step(self):
-        """Updates the x/y coordinates of the walker to step in a random 
-        direction (or not at all)"""
-        floor = -1      # Minimum step size
-        ceiling = 1     # Maximum step size
-
-        # Get step sizes for each dimension
-        xstep = random.randint(floor, ceiling)
-        ystep = random.randint(floor, ceiling)
-
-        # Update the walker's location
-        self.x += xstep
-        self.y += ystep
-
-# Initialize the walker
-global walker
+position = Vector(100, 100)
+velocity = Vector(1, 3.3)
 
 def setup():
-    """Initializes the canvas"""
-
-    # Set canvas size and background color
-    size(640, 240)  # x, y
-    background(255) # White
-
-    # Pull in the global walker variable and initialize it to a new Walker
-    global walker
-    walker = Walker()
+    pass
 
 def draw():
-    """Draw a frame"""
+    background(255)
+    
+    global position, velocity
+    position += velocity
 
-    # Pull in the global walker variable
-    global walker
+    if 0 > position.x or position.x > width:
+        velocity.x *= -1
+    if 0 > position.y or position.y > height:
+        velocity.y *= -1
 
-    # Update the position of the walker then draw it on the canvas
-    walker.step()
-    walker.show()
+    stroke(0)
+    fill(127)
+    circle(position.x, position.y, 48)
 
-# Run the p5 program
 run()
