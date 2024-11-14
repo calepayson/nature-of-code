@@ -40,3 +40,5 @@ run()
   range and the second defines the range to map the function to.
 - mouse_x, mouse_y, and mouse_is_pressed are useful environmental variables
   when trying to take mouse input.
+- The p5 docs state that the circle function take parameters x, y, and radius.
+  This is false. Use circle(x, y, diameter).
