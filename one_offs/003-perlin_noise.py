@@ -32,7 +32,7 @@ class Walker:
     def show(self):
         """Draw a frame of the walker on the p5 canvas"""
         stroke(0)   # Black
-        fill(50)    # Dark gray
+        fill(140)   # Gray
         circle(self.x, self.y, 42)  # x, y, size
 
 # Initialize a global walker variable
