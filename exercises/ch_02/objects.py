@@ -125,11 +125,24 @@ class Liquid:
         return within_x and within_y
 
     def calculate_drag(self, mover: Mover) -> Vector:
-        """Calculate the drag the liquid exerts on a mover."""
-        magnitude = (int(mover.velocity.magnitude) ** 2) * self.viscosity
-        velocity = mover.velocity.copy()
-        velocity.normalize()
-        return -1 * magnitude * velocity
+        """Calculate the drag the liquid exerts on a mover.
+
+        Limits the the drag to the magnitude of the Mover's acceleration. If 
+        other forces are being applied, drag won't be calculated correctly.
+        """
+        speed = mover.velocity.mag()
+
+        # Calculate the magnitude of the drag force
+        drag_magnitude = speed * speed * self.viscosity
+
+        # Calculate the direction of the drag force
+        drag_direction = mover.velocity.copy() * -1
+        drag_direction.normalize()
+
+        # Calculate the drag force
+        drag_force = float(drag_magnitude) * drag_direction
+        drag_force.limit(upper_limit=mover.velocity.mag())
+        return drag_force
 
     def show(self):
         """Draw the Liquid object."""
