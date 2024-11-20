@@ -1,41 +1,63 @@
 from p5 import *
-from objects import Mover, Liquid
+from objects import Mover, Attractor
+import random
 
-global mover
+# Adjust the number of movers
+NUMBER_OF_MOVERS = 4
+
+# Adjust the attractor's mass
+ATTRACTOR_MASS = 20
+
+# Adjust the minimum and maximum size of movers
+MIN_SIZE = 10
+MAX_SIZE = 70
+
+# Adjust the gravity constant
+GRAVITY_CONSTANT = 1
+
+# Adjust the expected screen width and height (p5 sets up before the screen 
+# resizes)
+SYSTEM_WIDTH = 930
+SYSTEM_HEIGHT = 500
+
+
+global attractor
+movers = []
 
 def setup():
     """Setup the p5 canvas."""
-    # Initialize the mover object
-    global mover
-    mover = Mover(Vector(width / 2, height / 2), 40)
+    # Pull in the global movers array and attractor variable
+    global movers, attractor
+
+    # Initialize the attractor
+    center = Vector(SYSTEM_WIDTH / 2, SYSTEM_HEIGHT / 2)
+    mass = ATTRACTOR_MASS
+    attractor = Attractor(center, mass)
+
+    # Initialize each mover
+    for _ in range(NUMBER_OF_MOVERS):
+        position = Vector(random.randint(0, SYSTEM_WIDTH), random.randint(0, SYSTEM_HEIGHT))
+        size = random.randint(MIN_SIZE, MAX_SIZE)
+        mover = Mover(position, size)
+        movers.append(mover)
 
 def draw():
-    # Pull in the global mover
-    global mover
-
-    # Make a liquid object (We do it here to get proper size)
-    liquid = Liquid(0, height / 2, width, height / 2, 0.2)
+    # Pull in the global movers array and attractor variable
+    global movers, attractor
 
     # Erase the canvas
     background(255)     # White
 
-    # Apply gravity
-    gravity = Vector(0, 0.5)
-    mover.apply_force(gravity)
+    # Draw the attractor
+    attractor.show()
 
-    # If the mover is in the liquid
-    if liquid.contains(mover):
-        # Calculate and apply the drage force
-        drag_force = liquid.calculate_drag(mover)
-        mover.apply_force(drag_force)
+    for mover in movers:
+        force = attractor.attract(mover)
+        mover.apply_force(force * GRAVITY_CONSTANT)
 
-    # Draw the liquid
-    liquid.show()
-
-    # Update the mover's position, check its edges, and draw it.
-    mover.step()
-    mover.check_edges(0.9)
-    mover.show()
+        mover.step()
+        mover.check_edges(0.9)
+        mover.show()
 
 
 # Run the p5 program

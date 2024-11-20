@@ -25,7 +25,7 @@ class Mover:
         self.acceleration = Vector(0, 0)
         self.diameter = diameter
         self.radius = self.diameter / 2
-        self.mass = diameter / 4
+        self.mass = diameter / 16
 
     def apply_force(self, force: Vector):
         """Apply a force to the Ball
@@ -150,3 +150,36 @@ class Liquid:
         no_stroke()
         fill(175)
         rect(self.x, self.y, self.width, self.height)
+
+class Attractor:
+    """Simulates an Attractor with a position and mass.
+
+    Attributes:
+        position (Vector): A 2D vector representing the Attractor's coordinates.
+        mass (int): The mass of the Attractor.
+    """
+    def __init__(self, position: Vector, mass: int):
+        """Construct a new Attractor object with the given attributes.
+
+        Args:
+            position (Vector): A 2D vector representing the Atrractor's desired
+                coordinates.
+            mass (int): The desired mass of the Attractor.
+        """
+        self.position = position
+        self.mass = mass
+
+    def show(self):
+        """Draw the attractor."""
+        stroke(0)       # Black
+        fill(175, 200)  # Gray, Mostly transparent
+        circle(self.position.x, self.position.y, self.mass * 2)
+
+    def attract(self, mover: Mover):
+        """Calculate the gravitational force exerted on a given mover."""
+        force = self.position - mover.position
+        distance = constrain(force.mag(), 5, 25)
+        strength = float((self.mass * mover.mass) / (distance ** 2))
+        force.normalize()
+        force *= strength
+        return force
