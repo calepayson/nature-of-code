@@ -131,9 +131,10 @@ class Liquid:
         other forces are being applied, drag won't be calculated correctly.
         """
         speed = mover.velocity.mag()
+        surface_area = mover.diameter
 
         # Calculate the magnitude of the drag force
-        drag_magnitude = speed * speed * self.viscosity
+        drag_magnitude = speed * speed * self.viscosity * surface_area
 
         # Calculate the direction of the drag force
         drag_direction = mover.velocity.copy() * -1
