@@ -1,5 +1,12 @@
 from p5 import *
 
+# Adjust the rate of angle acceleration
+ANGLE_ACCELERATION_FACTOR = 0.1
+
+# Adjust the min and max rotation speeds
+MIN_ANGLE_VELOCITY = -0.1
+MAX_ANGLE_VELOCITY = 0.1
+
 class Mover:
     """Represents a generic Mover.
 
@@ -14,11 +21,11 @@ class Mover:
             radians per frame.
         angle_acceleration (float): The rate of change of the Mover's angle
             velocity in radians per frame.
-        mass (int): The Mover's mass in generic units.
-        diameter (int): The Mover's diameter in pixels.
-        radius (int): The Mover's radius in pixels.
+        mass (float): The Mover's mass in generic units.
+        diameter (float): The Mover's diameter in pixels.
+        radius (float): The Mover's radius in pixels.
     """
-    def __init__(self, position: Vector, mass: int):
+    def __init__(self, position: Vector, mass: float):
         """Constructs a new Mover object.
 
         Args:
@@ -89,8 +96,15 @@ class Mover:
         self.velocity += self.acceleration
         self.position += self.velocity
 
-        # Apply all angular motion
+        # Calculate angle acceleration
+        self.angle_acceleration = self.acceleration.x * ANGLE_ACCELERATION_FACTOR
+        # Calculate and constrain angle velocity
         self.angle_velocity += self.angle_acceleration
+        self.angle_velocity = constrain(
+                self.angle_velocity, 
+                MIN_ANGLE_VELOCITY, 
+                MAX_ANGLE_VELOCITY)
+        # Update angle
         self.angle += self.angle_velocity
 
         # Reset acceleration
