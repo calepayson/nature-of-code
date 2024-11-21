@@ -9,6 +9,11 @@ class Mover:
             pixels per frame.
         acceleration (Vector): A 2D vector representing the Mover's acceleration
             in pixels per frame squared.
+        angle (float): The angle of the Mover.
+        angle_velocity (float): The rate of change of the Mover's angle in 
+            radians per frame.
+        angle_acceleration (float): The rate of change of the Mover's angle
+            velocity in radians per frame.
         mass (int): The Mover's mass in generic units.
         diameter (int): The Mover's diameter in pixels.
         radius (int): The Mover's radius in pixels.
@@ -24,6 +29,9 @@ class Mover:
         self.position = position
         self.velocity = Vector(0, 0)
         self.acceleration = Vector(0, 0)
+        self.angle = 0
+        self.angle_velocity = 0
+        self.angle_acceleration = 0
 
         # Static properties
         self.mass = mass
@@ -72,20 +80,46 @@ class Mover:
 
 
     def update(self):
-        """Update the position of the mover.
+        """Update the position and angle of the Mover.
 
         This method also clears the acceleration attribute. Forces must be 
         applied on a frame by frame basis.
         """
-        # Apply all forces and update the position
+        # Apply all forces
         self.velocity += self.acceleration
         self.position += self.velocity
+
+        # Apply all angular motion
+        self.angle_velocity += self.angle_acceleration
+        self.angle += self.angle_velocity
 
         # Reset acceleration
         self.acceleration *= 0
 
     def show(self):
-        """Draw the Mover."""
+        """Draw the Mover.
+
+        Saves the state of the canvas, centers the origin on the mover and 
+        rotates it, then restores the state of the canvas. If things start
+        showing up in weird places this method is a likely culprit.
+        """
+        # Initialize the color pallet
         stroke(0)   # Black
         fill(127)   # Gray
-        circle(self.position.x, self.position.y, self.diameter)
+
+        # Save current canvas state so rotation and translation doesn't effect
+        # the global program
+        push()
+
+        # Set the origin to the Mover's position
+        translate(self.position.x, self.position.y)
+
+        # Rotate by the angle
+        rotate(self.angle)
+
+        # Draw the mover
+        circle(0, 0, self.diameter)
+        line(0, 0, self.radius, 0)  # To help keep track of rotation
+
+        # Restore previous state of the p5 canvas
+        pop()
