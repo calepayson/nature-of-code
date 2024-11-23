@@ -125,6 +125,9 @@ class Mover:
         # the global program
         push()
 
+        # Set angle to the direction of travel
+        self.angle = atan2(self.velocity.y, self.velocity.x)
+
         # Set the origin to the Mover's position
         translate(self.position.x, self.position.y)
 
