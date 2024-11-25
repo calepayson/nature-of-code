@@ -1,40 +1,46 @@
 from p5 import *
 
 
-# Adjust the amplitude and period
-AMPLITUDE = width / 3
-PERIOD = 120
+# Adjust the period and speed
+PERIOD = 0.2
+SPEED = 0.02
 
-# Initialize a global variable to keep track of time
-tx = 0.0
+
+# Initialize global variables
+start_angle = 0
+delta_angle = PERIOD
 
 def draw():
     """
     Draw a single frame on the p5 canvas.
     """
-    # Pull in the global time variable
-    global tx
+    # Pull in the global variables
+    global start_angle, delta_angle
 
     # Reset the canvas
     background(255) # White
 
-    # Calculate the x value of the ball
-    x = sin((tx / PERIOD) * 2 * PI) * AMPLITUDE
+    # Start at the right y coordinate
+    angle = start_angle
 
-    # Reset the pallet
-    stroke(0)
-    fill(127)
+    # For each circle...
+    for x in range(0, width, 24):
+        # Calculate the y coordinate
+        y = ((sin(angle) + 1) / 2) * height
 
-    # Move the origin to the center of the screen
-    translate(width / 2, height / 2)
+        # Reset the pallete
+        stroke(0)
+        fill(127, 127)
 
-    # Draw the objects
-    line(0, 0, x, 0)
-    circle(x, 0, 48)
+        # Draw the circle
+        circle(x, y, 48)
 
-    # Increment time
-    tx += 1
+        # Increment the angle
+        angle += delta_angle
+
+    # Increment the start angle
+    start_angle += SPEED
 
 
-# Run the p5 program 
+# Run the p5 program
 run()
