@@ -42,3 +42,6 @@ run()
   when trying to take mouse input.
 - The p5 docs state that the circle function take parameters x, y, and radius.
   This is false. Use circle(x, y, diameter).
+- P5 uses special predefined functions (setup() and draw()) that don't take
+  arguments. To pass in variables you must pull them in using the `global` key
+  word.
